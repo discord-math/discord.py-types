@@ -1,4 +1,3 @@
-import abc
 from .asset import Asset
 from .channel import CategoryChannel, DMChannel, GroupChannel, PartialMessageable, TextChannel
 from .client import Client
@@ -21,18 +20,20 @@ from .ui.view import View
 from .user import ClientUser
 from .voice_client import VoiceProtocol
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional, Sequence, TypeVar, Union, overload
+from typing import Any, Callable, Dict, List, Optional, Protocol, Sequence, TypeVar, Union, overload, runtime_checkable
 
 T = TypeVar('T', bound=VoiceProtocol)
 PartialMessageableChannel = Union[TextChannel, Thread, DMChannel, PartialMessageable]
 MessageableChannel = Union[PartialMessageableChannel, GroupChannel]
 
-class Snowflake(metaclass=abc.ABCMeta):
+@runtime_checkable
+class Snowflake(Protocol):
     id: int
 
 SnowflakeTime = Union[Snowflake, datetime]
 
-class User(Snowflake, metaclass=abc.ABCMeta):
+@runtime_checkable
+class User(Snowflake, Protocol):
     name: str
     discriminator: str
     avatar: Asset
@@ -42,7 +43,8 @@ class User(Snowflake, metaclass=abc.ABCMeta):
     @property
     def mention(self) -> str: ...
 
-class PrivateChannel(Snowflake, metaclass=abc.ABCMeta):
+@runtime_checkable
+class PrivateChannel(Snowflake, Protocol):
     me: ClientUser
 
 class GuildChannel:
@@ -100,5 +102,5 @@ class Messageable:
     async def pins(self) -> List[Message]: ...
     def history(self, *, limit: Optional[int] = ..., before: Optional[SnowflakeTime] = ..., after: Optional[SnowflakeTime] = ..., around: Optional[SnowflakeTime] = ..., oldest_first: Optional[bool] = ...) -> HistoryIterator: ...
 
-class Connectable(metaclass=abc.ABCMeta):
+class Connectable(Protocol):
     async def connect(self, *, timeout: float = ..., reconnect: bool = ..., cls: Callable[[Client, Connectable], T] = ...) -> T: ...
