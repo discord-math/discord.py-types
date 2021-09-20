@@ -4,12 +4,11 @@ from .guild import Guild
 from .member import Member
 from .mixins import Hashable
 from .permissions import Permissions
-from .state import ConnectionState
-from typing import Any, List, Optional, TypeVar, Union
+from typing import List, Optional, TypeVar, Union
 
 class RoleTags:
-    bot_id: Any
-    integration_id: Any
+    bot_id: Optional[int]
+    integration_id: Optional[int]
     def is_bot_managed(self) -> bool: ...
     def is_premium_subscriber(self) -> bool: ...
     def is_integration(self) -> bool: ...
@@ -17,8 +16,14 @@ class RoleTags:
 R = TypeVar('R', bound='Role')
 
 class Role(Hashable):
-    guild: Any
-    id: Any
+    guild: Guild
+    id: int
+    name: str
+    position: int
+    hoist: bool
+    managed: bool
+    mentionable: bool
+    tags: Optional[RoleTags]
     def __lt__(self, other: R) -> bool: ...
     def __le__(self, other: R) -> bool: ...
     def __gt__(self, other: R) -> bool: ...

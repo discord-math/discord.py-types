@@ -1,7 +1,7 @@
 import datetime
 from .abc import GuildChannel
 from .emoji import Emoji
-from .enums import AuditLogActionCategory
+from .enums import AuditLogAction, AuditLogActionCategory
 from .guild import Guild
 from .invite import Invite
 from .member import Member
@@ -43,10 +43,21 @@ class _AuditLogProxyStageInstanceAction:
     channel: GuildChannel
 
 class AuditLogEntry(Hashable):
-    guild: Any
+    guild: Guild
+    action: AuditLogAction
+    id: int
+    reason: Optional[str]
+    extra: Any
+    user: Union[Member, User, None]
+    @property
     def created_at(self) -> datetime.datetime: ...
+    @property
     def target(self) -> Union[Guild, GuildChannel, Member, User, Role, Invite, Emoji, StageInstance, GuildSticker, Thread, Object, None]: ...
+    @property
     def category(self) -> AuditLogActionCategory: ...
+    @property
     def changes(self) -> AuditLogChanges: ...
+    @property
     def before(self) -> AuditLogDiff: ...
+    @property
     def after(self) -> AuditLogDiff: ...
