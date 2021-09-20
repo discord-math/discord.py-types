@@ -2,7 +2,6 @@ from .context import Context
 from .core import Command
 from typing import Any, Callable, ClassVar, Dict, Generator, List, Tuple, TypeVar
 
-CogT = TypeVar('CogT', bound='Cog')
 FuncT = TypeVar('FuncT', bound=Callable[..., Any])
 
 class CogMeta(type):

@@ -1,6 +1,6 @@
 import ctypes.util
 from .errors import DiscordException
-from typing import Literal, TypeVar, TypedDict, overload
+from typing import Literal, TypedDict, overload
 
 BAND_CTL = Literal['narrow', 'medium', 'wide', 'superwide', 'full']
 SIGNAL_CTL = Literal['auto', 'voice', 'music']

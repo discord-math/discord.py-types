@@ -1,9 +1,7 @@
 from .emoji import Emoji
 from .enums import ComponentType, ButtonStyle
 from .partial_emoji import PartialEmoji
-from typing import Any, ClassVar, Dict, List, Optional, Tuple, TypeVar, Union
-
-C = TypeVar('C', bound='Component')
+from typing import Any, ClassVar, Dict, List, Optional, Tuple, Union
 
 class Component:
     __repr_info__: ClassVar[Tuple[str, ...]]

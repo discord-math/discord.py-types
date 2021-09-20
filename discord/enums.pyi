@@ -1,5 +1,5 @@
 from enum import Enum as Enum
-from typing import ClassVar, Optional, TypeVar
+from typing import ClassVar, Optional
 
 class ChannelType(Enum):
     text: int

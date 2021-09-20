@@ -16,7 +16,7 @@ from .threads import Thread
 from .types.threads import ThreadArchiveDuration
 from .user import ClientUser, User
 from .webhook import Webhook
-from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, TypeVar, Union
+from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Union
 
 class TextChannel(discord.abc.Messageable, discord.abc.GuildChannel, Hashable):
     id: int
@@ -102,7 +102,6 @@ class StoreChannel(discord.abc.GuildChannel, Hashable):
     def is_nsfw(self) -> bool: ...
     async def clone(self, *, name: Optional[str] = ..., reason: Optional[str] = ...) -> StoreChannel: ...
     async def edit(self, *, name: str = ..., position: int = ..., nsfw: bool = ..., sync_permissions: bool = ..., category: Optional[CategoryChannel], reason: Optional[str], overwrites: Mapping[Union[Role, Member], PermissionOverwrite]) -> Optional[StoreChannel]: ...
-DMC = TypeVar('DMC', bound='DMChannel')
 
 class DMChannel(discord.abc.Messageable, Hashable):
     recipient: Optional[User]

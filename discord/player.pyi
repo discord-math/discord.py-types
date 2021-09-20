@@ -1,7 +1,7 @@
 import io
 import threading
 from .voice_client import VoiceClient
-from typing import Any, Callable, IO, Optional, Tuple, TypeVar, Union
+from typing import Any, Callable, IO, Optional, Tuple, Type, TypeVar, Union
 
 AT = TypeVar('AT', bound='AudioSource')
 FT = TypeVar('FT', bound='FFmpegOpusAudio')
@@ -29,7 +29,7 @@ class FFmpegPCMAudio(FFmpegAudio):
 class FFmpegOpusAudio(FFmpegAudio):
     def __init__(self, source: Union[str, io.BufferedIOBase], *, bitrate: int = ..., codec: Optional[str] = ..., executable: str = ..., pipe: bool = ..., stderr: Any | None = ..., before_options: Any | None = ..., options: Any | None = ...) -> None: ...
     @classmethod
-    async def from_probe(cls, source: str, *, method: Optional[Union[str, Callable[[str, str], Tuple[Optional[str], Optional[int]]]]] = ..., **kwargs: Any) -> FT: ...
+    async def from_probe(cls: Type[FT], source: str, *, method: Optional[Union[str, Callable[[str, str], Tuple[Optional[str], Optional[int]]]]] = ..., **kwargs: Any) -> FT: ...
     @classmethod
     async def probe(cls, source: str, *, method: Optional[Union[str, Callable[[str, str], Tuple[Optional[str], Optional[int]]]]] = ..., executable: Optional[str] = ...) -> Tuple[Optional[str], Optional[int]]: ...
     def read(self) -> bytes: ...

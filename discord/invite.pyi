@@ -7,7 +7,7 @@ from .guild import Guild
 from .mixins import Hashable
 from .object import Object
 from .user import User
-from typing import List, Optional, TypeVar, Union
+from typing import List, Optional, Union
 
 InviteGuildType = Union[Guild, 'PartialInviteGuild', Object]
 InviteChannelType = Union[GuildChannel, 'PartialInviteChannel', Object]

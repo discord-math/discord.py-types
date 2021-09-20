@@ -10,7 +10,7 @@ from discord.member import Member
 from discord.message import Message
 from discord.user import ClientUser, User
 from discord.voice_client import VoiceProtocol
-from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
+from typing import Any, Dict, Generic, List, Optional, Union
 
 class Context(discord.abc.Messageable):
     message: Message

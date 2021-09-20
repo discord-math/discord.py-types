@@ -6,7 +6,7 @@ from .colour import Colour
 from .flags import PublicUserFlags
 from .guild import Guild
 from .message import Message
-from typing import Any, List, Optional, TypeVar
+from typing import Any, List, Optional
 
 class _UserTag:
     id: int

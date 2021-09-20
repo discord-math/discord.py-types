@@ -12,7 +12,7 @@ from .stage_instance import StageInstance
 from .sticker import GuildSticker
 from .threads import Thread
 from .user import User
-from typing import Any, ClassVar, Dict, Generator, List, Optional, Tuple, TypeVar, Union
+from typing import Any, ClassVar, Dict, Generator, List, Optional, Tuple, Union
 
 class AuditLogDiff:
     def __len__(self) -> int: ...

@@ -1,5 +1,5 @@
 from .context import Context
-from typing import Any, Dict, Iterator, List, Pattern, Tuple, TypeVar
+from typing import Any, Dict, Iterator, List, Pattern, Tuple, Type, TypeVar
 
 class Flag:
     name: str
@@ -33,4 +33,4 @@ class FlagConverter(metaclass=FlagsMeta):
     @classmethod
     def parse_flags(cls, argument: str) -> Dict[str, List[str]]: ...
     @classmethod
-    async def convert(cls, ctx: Context, argument: str) -> F: ...
+    async def convert(cls: Type[F], ctx: Context, argument: str) -> F: ...

@@ -13,7 +13,7 @@ from .permissions import Permissions
 from .role import Role
 from .state import ConnectionState
 from .user import _UserTag
-from typing import Any, List, Literal, Optional, Tuple, TypeVar, Union
+from typing import Any, List, Literal, Optional, Tuple, Union
 
 VocalGuildChannel = Union[VoiceChannel, StageChannel]
 

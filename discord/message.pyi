@@ -22,7 +22,7 @@ from .types.threads import ThreadArchiveDuration
 from .types.message import MessageActivity as MessageActivityPayload, MessageApplication as MessageApplicationPayload
 from .ui.view import View
 from .user import User
-from typing import Any, List, Optional, TypeVar, Union, overload
+from typing import Any, List, Optional, Type, TypeVar, Union, overload
 
 MR = TypeVar('MR', bound='MessageReference')
 EmojiInputType = Union[Emoji, PartialEmoji, str]
@@ -58,7 +58,7 @@ class MessageReference:
     fail_if_not_exists: bool
     def __init__(self, message_id: int, channel_id: int, *, guild_id: Optional[int] = ..., fail_if_not_exists: bool = ...) -> None: ...
     @classmethod
-    def from_message(cls, message: Message, *, fail_if_not_exists: bool = ...) -> MR: ...
+    def from_message(cls: Type[MR], message: Message, *, fail_if_not_exists: bool = ...) -> MR: ...
     @property
     def cached_message(self) -> Optional[Message]: ...
     @property

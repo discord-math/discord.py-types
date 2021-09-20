@@ -6,7 +6,6 @@ from .cog import Cog
 from .cooldowns import BucketType
 from discord.message import Message
 from typing import Any, Callable, Dict, Generator, List, Optional, Set, Tuple, Type, TypeVar, Union, overload
-from typing_extensions import Concatenate
 
 T = TypeVar('T')
 CogT = TypeVar('CogT', bound='Cog')
