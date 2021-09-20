@@ -1,3 +1,4 @@
+import datetime
 from .abc import Messageable, Snowflake, SnowflakeTime
 from .channel import CategoryChannel, TextChannel
 from .enums import ChannelType
@@ -11,7 +12,22 @@ from .types.threads import ThreadArchiveDuration
 from typing import Any, Callable, Iterable, List, Optional, Union
 
 class Thread(Messageable, Hashable):
+    name: str
     guild: Guild
+    id: int
+    parent_id: int
+    owner_id: int
+    last_message_id: Optional[int]
+    slowmode_delay: int
+    message_count: int
+    member_count: int
+    me: Optional[ThreadMember]
+    archived: bool
+    locked: bool
+    invitable: bool
+    archiver_id: Optional[int]
+    auto_archive_duration: int
+    archive_timestamp: datetime.datetime
     @property
     def type(self) -> ChannelType: ...
     @property
