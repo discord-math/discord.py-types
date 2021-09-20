@@ -19,6 +19,16 @@ VocalGuildChannel = Union[VoiceChannel, StageChannel]
 
 class VoiceState:
     session_id: str
+    deaf: bool
+    mute: bool
+    self_mute: bool
+    self_stream: bool
+    self_video: bool
+    self_deaf: bool
+    afk: bool
+    channel: Optional[VocalGuildChannel]
+    requested_to_speak_at: Optional[datetime.datetime]
+    suppress: bool
 
 class Member(discord.abc.Messageable, _UserTag):
     name: str
