@@ -1,6 +1,6 @@
 import discord.utils
 import inspect
-from .bot import BotBase
+from .bot import AutoShardedBot, Bot
 from .cog import Cog
 from .core import Command
 from .view import StringView
@@ -14,7 +14,7 @@ from typing import Any, Dict, Generic, List, Optional, TypeVar, Union
 
 class Context(discord.abc.Messageable):
     message: Message
-    bot: BotBase
+    bot: Union[AutoShardedBot, Bot]
     args: List[Any]
     kwargs: Dict[str, Any]
     prefix: Optional[str]
@@ -26,7 +26,7 @@ class Context(discord.abc.Messageable):
     subcommand_passed: Optional[str]
     command_failed: bool
     current_parameter: Optional[inspect.Parameter]
-    def __init__(self, message: Message, bot: BotBase, view: StringView, *, args: List[Any] = ..., kwargs: Dict[str, Any] = ..., prefix: Optional[str] = ..., command: Optional[Command] = ..., invoked_with: Optional[str] = ..., invoked_parents: List[str] = ..., invoked_subcommand: Optional[Command] = ..., subcommand_passed: Optional[str] = ..., command_failed: bool = ..., current_parameter: Optional[inspect.Parameter] = ...) -> None: ...
+    def __init__(self, message: Message, bot: Union[AutoShardedBot, Bot], view: StringView, *, args: List[Any] = ..., kwargs: Dict[str, Any] = ..., prefix: Optional[str] = ..., command: Optional[Command] = ..., invoked_with: Optional[str] = ..., invoked_parents: List[str] = ..., invoked_subcommand: Optional[Command] = ..., subcommand_passed: Optional[str] = ..., command_failed: bool = ..., current_parameter: Optional[inspect.Parameter] = ...) -> None: ...
     async def invoke(self, command: Command, *args: Any, **kwargs: Any) -> Any: ...
     async def reinvoke(self, *, call_hooks: bool = ..., restart: bool = ...) -> None: ...
     @property
