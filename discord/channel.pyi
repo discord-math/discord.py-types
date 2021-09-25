@@ -14,12 +14,21 @@ from .stage_instance import StageInstance
 from .state import ConnectionState
 from .threads import Thread
 from .types.threads import ThreadArchiveDuration
-from .user import ClientUser, User
+from .user import BaseUser, ClientUser, User
 from .webhook import Webhook
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Union
 
 class TextChannel(discord.abc.Messageable, discord.abc.GuildChannel, Hashable):
+    name: str
     id: int
+    guild: Guild
+    topic: Optional[str]
+    nsfw: bool
+    category_id: Optional[int]
+    position: int
+    slowmode_delay: int
+    last_message_id: int
+    default_auto_archive_duration: ThreadArchiveDuration
     @property
     def type(self) -> ChannelType: ...
     def permissions_for(self, obj: Union[Member, Role]) -> Permissions: ...
@@ -44,7 +53,15 @@ class TextChannel(discord.abc.Messageable, discord.abc.GuildChannel, Hashable):
     def archived_threads(self, *, private: bool = ..., joined: bool = ..., limit: Optional[int] = ..., before: Optional[Union[Snowflake, datetime.datetime]] = ...) -> ArchivedThreadIterator: ...
 
 class VocalGuildChannel(discord.abc.Connectable, discord.abc.GuildChannel, Hashable):
+    name: str
     id: int
+    guild: Guild
+    bitrate: int
+    user_limit: int
+    position: int
+    category_id: Optional[int]
+    rtc_region: Optional[VoiceRegion]
+    video_quality_mode: VideoQualityMode
     @property
     def members(self) -> List[Member]: ...
     @property
@@ -58,6 +75,7 @@ class VoiceChannel(VocalGuildChannel):
     async def edit(self, *, name: str = ..., bitrate: int = ..., user_limit: int = ..., position: int = ..., sync_permissions: int = ..., category: Optional[CategoryChannel] = ..., overwrites: Mapping[Union[Role, Member], PermissionOverwrite] = ..., rtc_region: Optional[VoiceRegion] = ..., video_quality_mode: VideoQualityMode = ..., reason: Optional[str] = ...) -> Optional[VoiceChannel]: ...
 
 class StageChannel(VocalGuildChannel):
+    topic: str
     @property
     def requesting_to_speak(self) -> List[Member]: ...
     @property
@@ -76,7 +94,12 @@ class StageChannel(VocalGuildChannel):
     async def edit(self, *, name: str = ..., topic: Optional[str] = ..., position: int = ..., sync_permissions: int = ..., category: Optional[CategoryChannel] = ..., overwrites: Mapping[Union[Role, Member], PermissionOverwrite] = ..., rtc_region: Optional[VoiceRegion] = ..., video_quality_mode: VideoQualityMode = ..., reason: Optional[str] = ...) -> Optional[StageChannel]: ...
 
 class CategoryChannel(discord.abc.GuildChannel, Hashable):
+    name: str
     id: int
+    guild: Guild
+    nsfw: bool
+    position: int
+    category_id: Optional[int]
     @property
     def type(self) -> ChannelType: ...
     def is_nsfw(self) -> bool: ...
@@ -95,7 +118,12 @@ class CategoryChannel(discord.abc.GuildChannel, Hashable):
     async def create_stage_channel(self, name: str, topic: str, *, position: int = ..., overwrites: Dict[Union[Role, Member], PermissionOverwrite] = ..., reason: Optional[str] = ...) -> StageChannel: ...
 
 class StoreChannel(discord.abc.GuildChannel, Hashable):
+    name: str
     id: int
+    guild: Guild
+    nsfw: bool
+    category_id: Optional[int]
+    position: int
     @property
     def type(self) -> ChannelType: ...
     def permissions_for(self, obj: Union[Member, Role]) -> Permissions: ...
@@ -116,6 +144,10 @@ class DMChannel(discord.abc.Messageable, Hashable):
 
 class GroupChannel(discord.abc.Messageable, Hashable):
     id: int
+    recipients: List[User]
+    owner_id: Optional[int]
+    owner: Optional[BaseUser]
+    name: Optional[str]
     me: ClientUser
     @property
     def type(self) -> ChannelType: ...
