@@ -4,10 +4,18 @@ from .asset import AssetMixin
 from .guild import Guild
 from .partial_emoji import _EmojiTag
 from .role import Role
+from .user import User
 from typing import Any, Iterator, List, Optional, Tuple
 
 class Emoji(_EmojiTag, AssetMixin):
+    require_colons: bool
+    animated: bool
+    managed: bool
+    id: int
+    name: str
     guild_id: int
+    user: Optional[User]
+    available: bool
     def __iter__(self) -> Iterator[Tuple[str, Any]]: ...
     def __eq__(self, other: Any) -> bool: ...
     def __ne__(self, other: Any) -> bool: ...
