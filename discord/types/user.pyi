@@ -1,5 +1,5 @@
-from .snowflake import Snowflake as Snowflake
-from typing import Any, Optional, TypedDict
+from .snowflake import Snowflake
+from typing import Literal, Optional, TypedDict
 
 class PartialUser(TypedDict):
     id: Snowflake
@@ -7,9 +7,9 @@ class PartialUser(TypedDict):
     discriminator: str
     avatar: Optional[str]
 
-PremiumType: Any
+PremiumType = Literal[0, 1, 2]
 
-class User(PartialUser):
+class User(PartialUser, total=False):
     bot: bool
     system: bool
     mfa_enabled: bool

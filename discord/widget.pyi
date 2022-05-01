@@ -2,8 +2,10 @@ import datetime
 from .activity import BaseActivity, Spotify
 from .enums import Status
 from .invite import Invite
+from .state import ConnectionState
+from .types.widget import Widget as WidgetPayload, WidgetMember as WidgetMemberPayload
 from .user import BaseUser
-from typing import Any, List, Optional, Union
+from typing import List, Optional, Union
 
 class WidgetChannel:
     id: int
@@ -16,13 +18,19 @@ class WidgetChannel:
     def created_at(self) -> datetime.datetime: ...
 
 class WidgetMember(BaseUser):
-    activity: Optional[Union[BaseActivity, Spotify]]
-    nick: int
+    name: str
     status: Status
+    nick: Optional[str]
+    avatar: Optional[str] # type: ignore
+    discriminator: str
+    id: int
+    bot: bool
+    activity: Optional[Union[BaseActivity, Spotify]]
     deafened: Optional[bool]
-    muted: Optional[bool]
     suppress: Optional[bool]
+    muted: Optional[bool]
     connected_channel: Optional[WidgetChannel]
+    def __init__(self, *, state: ConnectionState, data: WidgetMemberPayload, connected_channel: Optional[WidgetChannel] = ...) -> None: ...
     @property
     def display_name(self) -> str: ...
 
@@ -31,11 +39,13 @@ class Widget:
     id: int
     channels: List[WidgetChannel]
     members: List[WidgetMember]
-    def __eq__(self, other: Any) -> bool: ...
+    presence_count: int
+    def __init__(self, *, state: ConnectionState, data: WidgetPayload) -> None: ...
+    def __eq__(self, other: object) -> bool: ...
     @property
     def created_at(self) -> datetime.datetime: ...
     @property
     def json_url(self) -> str: ...
     @property
-    def invite_url(self) -> str: ...
-    async def fetch_invite(self, *, with_counts: bool = ...) -> Invite: ...
+    def invite_url(self) -> Optional[str]: ...
+    async def fetch_invite(self, *, with_counts: bool = ...) -> Optional[Invite]: ...

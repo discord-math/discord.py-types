@@ -1,6 +1,6 @@
 import datetime
 from .mixins import Hashable
-from typing import Any, SupportsInt, Union
+from typing import SupportsInt, Union
 
 SupportsIntCast = Union[SupportsInt, str, bytes, bytearray]
 

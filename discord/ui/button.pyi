@@ -2,11 +2,13 @@ from ..components import Button as ButtonComponent
 from ..emoji import Emoji
 from ..enums import ButtonStyle, ComponentType
 from ..partial_emoji import PartialEmoji
+from ..types.components import ButtonComponent as ButtonComponentPayload
 from .item import Item, ItemCallbackType
 from .view import View
-from typing import Any, Callable, Optional, Tuple, TypeVar, Union
+from typing import Any, Callable, Literal, Optional, Tuple, Type, TypeVar, Union
 
 V = TypeVar('V', bound='View', covariant=True)
+B = TypeVar('B', bound='Button[Any]')
 
 class Button(Item[V]):
     __item_repr_attributes__: Tuple[str, ...]
@@ -36,9 +38,12 @@ class Button(Item[V]):
     def emoji(self) -> Optional[PartialEmoji]: ...
     @emoji.setter
     def emoji(self, value: Optional[Union[str, Emoji, PartialEmoji]]) -> None: ...
+    @classmethod
+    def from_component(cls: Type[B], button: ButtonComponent) -> B: ... # type: ignore
     @property
-    def type(self) -> ComponentType: ...
+    def type(self) -> Literal[ComponentType.button]: ...
+    def to_component_dict(self) -> ButtonComponentPayload: ... # type: ignore
     def is_dispatchable(self) -> bool: ...
     def is_persistent(self) -> bool: ...
 
-def button(*, label: Optional[str] = ..., custom_id: Optional[str] = ..., disabled: bool = ..., style: ButtonStyle = ..., emoji: Optional[Union[str, Emoji, PartialEmoji]] = ..., row: Optional[int] = ...) -> Callable[[ItemCallbackType[Button[V]]], ItemCallbackType[Button[V]]]: ...
+def button(*, label: Optional[str] = ..., custom_id: Optional[str] = ..., disabled: bool = ..., style: ButtonStyle = ..., emoji: Optional[Union[str, Emoji, PartialEmoji]] = ..., row: Optional[int] = ...) -> Callable[[ItemCallbackType[V, Button[V]]], Button[V]]: ...

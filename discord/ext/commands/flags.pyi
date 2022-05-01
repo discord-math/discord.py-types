@@ -1,3 +1,4 @@
+from ._types import BotT
 from .context import Context
 from typing import Any, Dict, Iterator, List, Pattern, Tuple, Type, TypeVar
 
@@ -13,7 +14,9 @@ class Flag:
     @property
     def required(self) -> bool: ...
 
-def flag(*, name: str = ..., aliases: List[str] = ..., default: Any = ..., max_args: int = ..., override: bool = ...) -> Any: ...
+def flag(*, name: str = ..., aliases: List[str] = ..., default: Any = ..., max_args: int = ..., override: bool = ..., converter: Any = ...) -> Any: ...
+
+FM = TypeVar('FM', bound='FlagsMeta')
 
 class FlagsMeta(type):
     __commands_is_flag__: bool
@@ -23,8 +26,9 @@ class FlagsMeta(type):
     __commands_flag_case_insensitive__: bool
     __commands_flag_delimiter__: str
     __commands_flag_prefix__: str
+    def __new__(cls: Type[FM], name: str, bases: Tuple[type, ...], attrs: Dict[str, Any], *, case_insensitive: bool = ..., delimiter: str = ..., prefix: str = ...) -> FM: ...
 
-F = TypeVar('F', bound='FlagConverter')
+FC = TypeVar('FC', bound='FlagConverter')
 
 class FlagConverter(metaclass=FlagsMeta):
     @classmethod
@@ -33,4 +37,4 @@ class FlagConverter(metaclass=FlagsMeta):
     @classmethod
     def parse_flags(cls, argument: str) -> Dict[str, List[str]]: ...
     @classmethod
-    async def convert(cls: Type[F], ctx: Context, argument: str) -> F: ...
+    async def convert(cls: Type[FC], ctx: Context[BotT], argument: str) -> FC: ...

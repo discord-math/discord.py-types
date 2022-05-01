@@ -1,14 +1,11 @@
-from .member import MemberWithUser as MemberWithUser
-from .snowflake import Snowflake as Snowflake
-from typing import Any, List, Optional, TypedDict
+from .member import MemberWithUser
+from .snowflake import Snowflake
+from typing import List, Literal, Optional, TypedDict
+from typing_extensions import NotRequired
 
-SupportedModes: Any
+SupportedModes = Literal['xsalsa20_poly1305_lite', 'xsalsa20_poly1305_suffix', 'xsalsa20_poly1305']
 
-class _PartialVoiceStateOptional(TypedDict):
-    member: MemberWithUser
-    self_stream: bool
-
-class _VoiceState(_PartialVoiceStateOptional):
+class _VoiceState(TypedDict):
     user_id: Snowflake
     session_id: str
     deaf: bool
@@ -17,11 +14,13 @@ class _VoiceState(_PartialVoiceStateOptional):
     self_mute: bool
     self_video: bool
     suppress: bool
+    member: NotRequired[MemberWithUser]
+    self_stream: NotRequired[bool]
 
 class GuildVoiceState(_VoiceState):
     channel_id: Snowflake
 
-class VoiceState(_VoiceState):
+class VoiceState(_VoiceState, total=False):
     channel_id: Optional[Snowflake]
     guild_id: Snowflake
 

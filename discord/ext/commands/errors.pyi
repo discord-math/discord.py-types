@@ -1,13 +1,15 @@
+from ._types import BotT
 from .context import Context
-from .converter import Converter as Converter
+from .converter import Converter
 from .cooldowns import BucketType, Cooldown
 from .flags import Flag
+from .parameters import Parameter
 from discord.abc import GuildChannel
+from discord.app_commands import AppCommandError
 from discord.errors import ClientException, DiscordException
 from discord.threads import Thread
 from discord.types.snowflake import Snowflake, SnowflakeList
-from inspect import Parameter
-from typing import Any, Callable, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, List, Optional, Tuple, Union
 
 class CommandError(DiscordException):
     def __init__(self, message: Optional[str] = ..., *args: Any) -> None: ...
@@ -30,8 +32,8 @@ class CheckFailure(CommandError): ...
 
 class CheckAnyFailure(CheckFailure):
     checks: List[CheckFailure]
-    errors: List[Callable[[Context], bool]]
-    def __init__(self, checks: List[CheckFailure], errors: List[Callable[[Context], bool]]) -> None: ...
+    errors: List[Callable[[Context[BotT]], bool]]
+    def __init__(self, checks: List[CheckFailure], errors: List[Callable[[Context[BotT]], bool]]) -> None: ...
 
 class PrivateMessageOnly(CheckFailure):
     def __init__(self, message: Optional[str] = ...) -> None: ...
@@ -62,12 +64,12 @@ class MessageNotFound(BadArgument):
     def __init__(self, argument: str) -> None: ...
 
 class ChannelNotReadable(BadArgument):
-    argument: str
+    argument: Union[GuildChannel, Thread]
     def __init__(self, argument: Union[GuildChannel, Thread]) -> None: ...
 
 class ChannelNotFound(BadArgument):
-    argument: str
-    def __init__(self, argument: str) -> None: ...
+    argument: Union[int, str]
+    def __init__(self, argument: Union[int, str]) -> None: ...
 
 class ThreadNotFound(BadArgument):
     argument: str
@@ -98,9 +100,19 @@ class GuildStickerNotFound(BadArgument):
     argument: str
     def __init__(self, argument: str) -> None: ...
 
+class ScheduledEventNotFound(BadArgument):
+    argument: str
+    def __init__(self, argument: str) -> None: ...
+
 class BadBoolArgument(BadArgument):
     argument: str
     def __init__(self, argument: str) -> None: ...
+
+class RangeError(BadArgument):
+    value: Union[int, float]
+    minimum: Optional[Union[int, float]]
+    maximum: Optional[Union[int, float]]
+    def __init__(self, value: Union[int, float], minimum: Optional[Union[int, float]], maximum: Optional[Union[int, float]]) -> None: ...
 
 class DisabledCommand(CommandError): ...
 
@@ -140,18 +152,18 @@ class NSFWChannelRequired(CheckFailure):
     def __init__(self, channel: Union[GuildChannel, Thread]) -> None: ...
 
 class MissingPermissions(CheckFailure):
-    missing_permissions: Any
+    missing_permissions: List[str]
     def __init__(self, missing_permissions: List[str], *args: Any) -> None: ...
 
 class BotMissingPermissions(CheckFailure):
-    missing_permissions: Any
+    missing_permissions: List[str]
     def __init__(self, missing_permissions: List[str], *args: Any) -> None: ...
 
 class BadUnionArgument(UserInputError):
     param: Parameter
-    converters: Tuple[Type[Any], ...]
+    converters: Tuple[type, ...]
     errors: List[CommandError]
-    def __init__(self, param: Parameter, converters: Tuple[Type[Any], ...], errors: List[CommandError]): ...
+    def __init__(self, param: Parameter, converters: Tuple[type, ...], errors: List[CommandError]): ...
 
 class BadLiteralArgument(UserInputError):
     param: Parameter
@@ -216,3 +228,7 @@ class MissingRequiredFlag(FlagError):
 class MissingFlagArgument(FlagError):
     flag: Flag
     def __init__(self, flag: Flag) -> None: ...
+
+class HybridCommandError(CommandError):
+    original: AppCommandError
+    def __init__(self, original: AppCommandError) -> None: ...

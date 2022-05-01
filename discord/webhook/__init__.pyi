@@ -1,11 +1,10 @@
 from .async_ import (
+    Webhook as Webhook,
+    WebhookMessage as WebhookMessage,
     PartialWebhookChannel as PartialWebhookChannel,
     PartialWebhookGuild as PartialWebhookGuild,
-    WebhookMessage as WebhookMessage,
-    BaseWebhook as BaseWebhook,
-    Webhook as Webhook,
 )
 from .sync import (
-    SyncWebhookMessage as SyncWebhookMessage,
     SyncWebhook as SyncWebhook,
+    SyncWebhookMessage as SyncWebhookMessage,
 )

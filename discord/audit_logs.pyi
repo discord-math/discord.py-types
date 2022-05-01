@@ -1,7 +1,6 @@
 import datetime
-from .abc import GuildChannel
+from . import abc, enums, flags
 from .emoji import Emoji
-from .enums import AuditLogAction, AuditLogActionCategory
 from .guild import Guild
 from .invite import Invite
 from .member import Member
@@ -11,8 +10,11 @@ from .role import Role
 from .stage_instance import StageInstance
 from .sticker import GuildSticker
 from .threads import Thread
+from .types.audit_log import AuditLogChange as AuditLogChangePayload, AuditLogEntry as AuditLogEntryPayload
 from .user import User
-from typing import Any, ClassVar, Dict, Generator, List, Optional, Tuple, Union
+from typing import Any, Callable, ClassVar, Dict, Generator, List, Optional, Tuple, TypeVar, Union
+
+TargetType = Union[Guild, abc.GuildChannel, Member, User, Role, Invite, Emoji, StageInstance, GuildSticker, Thread, Object, None]
 
 class AuditLogDiff:
     def __len__(self) -> int: ...
@@ -20,44 +22,46 @@ class AuditLogDiff:
     def __getattr__(self, item: str) -> Any: ...
     def __setattr__(self, key: str, value: Any) -> Any: ...
 
+Transformer = Callable[['AuditLogEntry', Any], Any]
+
 class AuditLogChanges:
+    TRANSFORMERS: ClassVar[Dict[str, Tuple[Optional[str], Optional[Transformer]]]]
     before: AuditLogDiff
     after: AuditLogDiff
+    def __init__(self, entry: AuditLogEntry, data: List[AuditLogChangePayload]) -> None: ...
 
-class _AuditLogProxyMemberPrune:
+class _AuditLogProxy:
+    def __init__(self, **kwargs: Any) -> None: ...
+
+class _AuditLogProxyMemberPrune(_AuditLogProxy):
     delete_member_days: int
     members_removed: int
 
-class _AuditLogProxyMemberMoveOrMessageDelete:
-    channel: GuildChannel
+class _AuditLogProxyMemberMoveOrMessageDelete(_AuditLogProxy):
+    channel: Union[abc.GuildChannel, Thread]
     count: int
 
-class _AuditLogProxyMemberDisconnect:
+class _AuditLogProxyMemberDisconnect(_AuditLogProxy):
     count: int
 
-class _AuditLogProxyPinAction:
-    channel: GuildChannel
+class _AuditLogProxyPinAction(_AuditLogProxy):
+    channel: Union[abc.GuildChannel, Thread]
     message_id: int
 
-class _AuditLogProxyStageInstanceAction:
-    channel: GuildChannel
+class _AuditLogProxyStageInstanceAction(_AuditLogProxy):
+    channel: abc.GuildChannel
 
 class AuditLogEntry(Hashable):
     guild: Guild
-    action: AuditLogAction
+    action: enums.AuditLogAction
     id: int
     reason: Optional[str]
-    extra: Any
-    user: Union[Member, User, None]
-    @property
+    extra: Union[_AuditLogProxyMemberPrune, _AuditLogProxyMemberMoveOrMessageDelete, _AuditLogProxyMemberDisconnect, _AuditLogProxyPinAction, _AuditLogProxyStageInstanceAction, Member, User, None, Role, Object]
+    user: Optional[Union[User, Member]]
+    def __init__(self, *, users: Dict[int, User], data: AuditLogEntryPayload, guild: Guild) -> None: ...
     def created_at(self) -> datetime.datetime: ...
-    @property
-    def target(self) -> Union[Guild, GuildChannel, Member, User, Role, Invite, Emoji, StageInstance, GuildSticker, Thread, Object, None]: ...
-    @property
-    def category(self) -> AuditLogActionCategory: ...
-    @property
+    def target(self) -> TargetType: ...
+    def category(self) -> Optional[enums.AuditLogActionCategory]: ...
     def changes(self) -> AuditLogChanges: ...
-    @property
     def before(self) -> AuditLogDiff: ...
-    @property
     def after(self) -> AuditLogDiff: ...

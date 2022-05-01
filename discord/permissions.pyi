@@ -1,5 +1,8 @@
-from .flags import BaseFlags
-from typing import Any, ClassVar, Iterator, Optional, Set, Tuple, Type, TypeVar
+from .flags import BaseFlags, alias_flag_value, flag_value
+from typing import ClassVar, Iterator, Optional, Set, Tuple, Type, TypeVar
+
+class permission_alias(alias_flag_value):
+    alias: str
 
 P = TypeVar('P', bound='Permissions')
 
@@ -33,53 +36,57 @@ class Permissions(BaseFlags):
     @classmethod
     def stage_moderator(cls: Type[P]) -> P: ...
     @classmethod
+    def elevated(cls: Type[P]) -> P: ...
+    @classmethod
     def advanced(cls: Type[P]) -> P: ...
     def update(self, **kwargs: bool) -> None: ...
     def handle_overwrite(self, allow: int, deny: int) -> None: ...
-    create_instant_invite: bool
-    kick_members: bool
-    ban_members: bool
-    administrator: bool
-    manage_channels: bool
-    manage_guild: bool
-    add_reactions: bool
-    view_audit_log: bool
-    priority_speaker: bool
-    stream: bool
-    read_messages: bool
-    view_channel: bool
-    send_messages: bool
-    send_tts_messages: bool
-    manage_messages: bool
-    embed_links: bool
-    attach_files: bool
-    read_message_history: bool
-    mention_everyone: bool
-    external_emojis: bool
-    use_external_emojis: bool
-    view_guild_insights: bool
-    connect: bool
-    speak: bool
-    mute_members: bool
-    deafen_members: bool
-    move_members: bool
-    use_voice_activation: bool
-    change_nickname: bool
-    manage_nicknames: bool
-    manage_roles: bool
-    manage_permissions: bool
-    manage_webhooks: bool
-    manage_emojis: bool
-    manage_emojis_and_stickers: bool
-    use_slash_commands: bool
-    request_to_speak: bool
-    manage_events: bool
-    manage_threads: bool
-    create_public_threads: bool
-    create_private_threads: bool
-    external_stickers: bool
-    use_external_stickers: bool
-    send_messages_in_threads: bool
+    create_instant_invite: flag_value
+    kick_members: flag_value
+    ban_members: flag_value
+    administrator: flag_value
+    manage_channels: flag_value
+    manage_guild: flag_value
+    add_reactions: flag_value
+    view_audit_log: flag_value
+    priority_speaker: flag_value
+    stream: flag_value
+    read_messages: flag_value
+    view_channel: flag_value
+    send_messages: flag_value
+    send_tts_messages: flag_value
+    manage_messages: flag_value
+    embed_links: flag_value
+    attach_files: flag_value
+    read_message_history: flag_value
+    mention_everyone: flag_value
+    external_emojis: flag_value
+    use_external_emojis: flag_value
+    view_guild_insights: flag_value
+    connect: flag_value
+    speak: flag_value
+    mute_members: flag_value
+    deafen_members: flag_value
+    move_members: flag_value
+    use_voice_activation: flag_value
+    change_nickname: flag_value
+    manage_nicknames: flag_value
+    manage_roles: flag_value
+    manage_permissions: flag_value
+    manage_webhooks: flag_value
+    manage_emojis: flag_value
+    manage_emojis_and_stickers: flag_value
+    use_application_commands: flag_value
+    request_to_speak: flag_value
+    manage_events: flag_value
+    manage_threads: flag_value
+    create_public_threads: flag_value
+    create_private_threads: flag_value
+    external_stickers: flag_value
+    use_external_stickers: flag_value
+    send_messages_in_threads: flag_value
+    use_embedded_activities: flag_value
+    moderate_members: flag_value
 
 PO = TypeVar('PO', bound='PermissionOverwrite')
 
@@ -121,7 +128,7 @@ class PermissionOverwrite:
     manage_webhooks: Optional[bool]
     manage_emojis: Optional[bool]
     manage_emojis_and_stickers: Optional[bool]
-    use_slash_commands: Optional[bool]
+    use_application_commands: Optional[bool]
     request_to_speak: Optional[bool]
     manage_events: Optional[bool]
     manage_threads: Optional[bool]
@@ -130,11 +137,13 @@ class PermissionOverwrite:
     send_messages_in_threads: Optional[bool]
     external_stickers: Optional[bool]
     use_external_stickers: Optional[bool]
+    use_embedded_activities: Optional[bool]
+    moderate_members: Optional[bool]
     def __init__(self, **kwargs: Optional[bool]) -> None: ...
-    def __eq__(self, other: Any) -> bool: ...
+    def __eq__(self, other: object) -> bool: ...
     def pair(self) -> Tuple[Permissions, Permissions]: ...
     @classmethod
     def from_pair(cls: Type[PO], allow: Permissions, deny: Permissions) -> PO: ...
     def is_empty(self) -> bool: ...
-    def update(self, **kwargs: bool) -> None: ...
+    def update(self, **kwargs: Optional[bool]) -> None: ...
     def __iter__(self) -> Iterator[Tuple[str, Optional[bool]]]: ...

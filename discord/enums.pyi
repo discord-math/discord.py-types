@@ -1,5 +1,5 @@
 from enum import Enum as Enum
-from typing import ClassVar, Optional
+from typing import Any, Optional, Type, TypeVar
 
 class ChannelType(Enum):
     text: int
@@ -8,11 +8,11 @@ class ChannelType(Enum):
     group: int
     category: int
     news: int
-    store: int
     news_thread: int
     public_thread: int
     private_thread: int
     stage_voice: int
+    forum: int
 
 class MessageType(Enum):
     default: int
@@ -35,34 +35,10 @@ class MessageType(Enum):
     guild_discovery_grace_period_final_warning: int
     thread_created: int
     reply: int
-    application_command: int
+    chat_input_command: int
     thread_starter_message: int
     guild_invite_reminder: int
-
-class VoiceRegion(Enum):
-    us_west: str
-    us_east: str
-    us_south: str
-    us_central: str
-    eu_west: str
-    eu_central: str
-    singapore: str
-    london: str
-    sydney: str
-    amsterdam: str
-    frankfurt: str
-    brazil: str
-    hongkong: str
-    russia: str
-    japan: str
-    southafrica: str
-    south_korea: str
-    india: str
-    europe: str
-    dubai: str
-    vip_us_east: str
-    vip_us_west: str
-    vip_amsterdam: str
+    context_menu_command: int
 
 class SpeakingState(Enum):
     none: int
@@ -150,6 +126,9 @@ class AuditLogAction(Enum):
     sticker_create: int
     sticker_update: int
     sticker_delete: int
+    scheduled_event_create: int
+    scheduled_event_update: int
+    scheduled_event_delete: int
     thread_create: int
     thread_update: int
     thread_delete: int
@@ -176,6 +155,8 @@ class UserFlags(Enum):
     verified_bot: int
     verified_bot_developer: int
     discord_certified_moderator: int
+    bot_http_interactions: int
+    spammer: int
 
 class ActivityType(Enum):
     unknown: int
@@ -221,6 +202,8 @@ class InteractionType(Enum):
     ping: int
     application_command: int
     component: int
+    autocomplete: int
+    modal_submit: int
 
 class InteractionResponseType(Enum):
     pong: int
@@ -228,6 +211,8 @@ class InteractionResponseType(Enum):
     deferred_channel_message: int
     deferred_message_update: int
     message_update: int
+    autocomplete_result: int
+    modal: int
 
 class VideoQualityMode(Enum):
     auto: int
@@ -238,6 +223,7 @@ class ComponentType(Enum):
     action_row: int
     button: int
     select: int
+    text_input: int
     def __int__(self) -> int: ...
 
 class ButtonStyle(Enum):
@@ -254,9 +240,13 @@ class ButtonStyle(Enum):
     url: int
     def __int__(self) -> int: ...
 
-class StagePrivacyLevel(Enum):
-    public: int
-    closed: int
+class TextStyle(Enum):
+    short: int
+    paragraph: int
+    long: int
+    def __int__(self) -> int: ...
+
+class PrivacyLevel(Enum):
     guild_only: int
 
 class NSFWLevel(Enum):
@@ -264,3 +254,75 @@ class NSFWLevel(Enum):
     explicit: int
     safe: int
     age_restricted: int
+
+class MFALevel(Enum):
+    disabled: int
+    require_2fa: int
+
+class Locale(Enum):
+    american_english: str
+    british_english: str
+    bulgarian: str
+    chinese: str
+    taiwan_chinese: str
+    croatian: str
+    czech: str
+    danish: str
+    dutch: str
+    finnish: str
+    french: str
+    german: str
+    greek: str
+    hindi: str
+    hungarian: str
+    italian: str
+    japanese: str
+    korean: str
+    lithuanian: str
+    norwegian: str
+    polish: str
+    brazil_portuguese: str
+    romanian: str
+    russian: str
+    spain_spanish: str
+    swedish: str
+    thai: str
+    turkish: str
+    ukrainian: str
+    vietnamese: str
+E = TypeVar('E', bound='Enum')
+
+class EntityType(Enum):
+    stage_instance: int
+    voice: int
+    external: int
+
+class EventStatus(Enum):
+    scheduled: int
+    active: int
+    completed: int
+    canceled: int
+    ended: int
+    cancelled: int
+
+class AppCommandOptionType(Enum):
+    subcommand: int
+    subcommand_group: int
+    string: int
+    integer: int
+    boolean: int
+    user: int
+    channel: int
+    role: int
+    mentionable: int
+    number: int
+    attachment: int
+
+class AppCommandType(Enum):
+    chat_input: int
+    user: int
+    message: int
+
+def create_unknown_value(cls: Type[E], val: Any) -> E: ...
+
+def try_enum(cls: Type[E], val: Any) -> E: ...
