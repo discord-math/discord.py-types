@@ -44,9 +44,6 @@ class StageChannelConverter(IDConverter[discord.StageChannel]):
 class CategoryChannelConverter(IDConverter[discord.CategoryChannel]):
     async def convert(self, ctx: Context, argument: str) -> discord.CategoryChannel: ...
 
-class StoreChannelConverter(IDConverter[discord.StoreChannel]):
-    async def convert(self, ctx: Context, argument: str) -> discord.StoreChannel: ...
-
 class ThreadConverter(IDConverter[discord.Thread]):
     async def convert(self, ctx: Context, argument: str) -> discord.Thread: ...
 

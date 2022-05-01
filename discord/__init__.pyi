@@ -25,7 +25,6 @@ from .channel import (
     GroupChannel as GroupChannel,
     PartialMessageable as PartialMessageable,
     StageChannel as StageChannel,
-    StoreChannel as StoreChannel,
     TextChannel as TextChannel,
     VoiceChannel as VoiceChannel,
 )

@@ -1,7 +1,7 @@
 import datetime
 from .abc import Snowflake, SnowflakeTime
 from .asset import Asset
-from .channel import CategoryChannel, StageChannel, StoreChannel, TextChannel, VoiceChannel
+from .channel import CategoryChannel, StageChannel, TextChannel, VoiceChannel
 from .colour import Colour
 from .emoji import Emoji
 from .enums import AuditLogAction, ContentFilter, NotificationLevel, VerificationLevel, VideoQualityMode, VoiceRegion
@@ -26,7 +26,7 @@ from .widget import Widget
 from typing import AsyncIterator, Dict, List, Literal, NamedTuple, Optional, Sequence, Tuple, Union, overload
 
 VocalGuildChannel = Union[VoiceChannel, StageChannel]
-GuildChannel = Union[VoiceChannel, StageChannel, TextChannel, CategoryChannel, StoreChannel]
+GuildChannel = Union[VoiceChannel, StageChannel, TextChannel, CategoryChannel]
 ByCategoryItem = Tuple[Optional[CategoryChannel], List[GuildChannel]]
 
 class BanEntry(NamedTuple):

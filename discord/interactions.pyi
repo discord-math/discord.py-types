@@ -1,4 +1,4 @@
-from .channel import CategoryChannel, PartialMessageable, StageChannel, StoreChannel, TextChannel, VoiceChannel
+from .channel import CategoryChannel, PartialMessageable, StageChannel, TextChannel, VoiceChannel
 from .embeds import Embed
 from .file import File
 from .guild import Guild
@@ -11,7 +11,7 @@ from .ui.view import View
 from .webhook.async_ import Webhook
 from typing import Any, List, Optional, Union
 
-InteractionChannel = Union[VoiceChannel, StageChannel, TextChannel, CategoryChannel, StoreChannel, Thread, PartialMessageable]
+InteractionChannel = Union[VoiceChannel, StageChannel, TextChannel, CategoryChannel, Thread, PartialMessageable]
 
 class Interaction:
     @property

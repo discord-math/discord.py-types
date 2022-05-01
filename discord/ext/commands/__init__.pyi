@@ -31,7 +31,6 @@ from .converter import (
     PartialMessageConverter as PartialMessageConverter,
     RoleConverter as RoleConverter,
     StageChannelConverter as StageChannelConverter,
-    StoreChannelConverter as StoreChannelConverter,
     TextChannelConverter as TextChannelConverter,
     ThreadConverter as ThreadConverter,
     UserConverter as UserConverter,
