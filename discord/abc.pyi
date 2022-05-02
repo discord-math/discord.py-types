@@ -21,7 +21,7 @@ from .ui.view import View
 from .user import ClientUser
 from .voice_client import VoiceProtocol
 from datetime import datetime
-from typing import AsyncIterator, Callable, Dict, List, Optional, Sequence, TypeVar, Union, overload
+from typing import AsyncIterator, Callable, Dict, List, Optional, Protocol, Sequence, TypeVar, Union, overload, runtime_checkable
 
 T = TypeVar('T', bound=VoiceProtocol)
 SnowflakeTime = Union['Snowflake', datetime]
@@ -30,7 +30,8 @@ MessageableChannel = Union[PartialMessageableChannel, GroupChannel]
 
 class _Undefined: ...
 
-class Snowflake(metaclass=abc.ABCMeta):
+@runtime_checkable
+class Snowflake(Protocol, metaclass=abc.ABCMeta):
     id: int
 
 class User(Snowflake, metaclass=abc.ABCMeta):
@@ -122,5 +123,6 @@ class Messageable:
     async def pins(self) -> List[Message]: ...
     async def history(self, *, limit: Optional[int] = ..., before: Optional[SnowflakeTime] = ..., after: Optional[SnowflakeTime] = ..., around: Optional[SnowflakeTime] = ..., oldest_first: Optional[bool] = ...) -> AsyncIterator[Message]: ...
 
-class Connectable(metaclass=abc.ABCMeta):
+@runtime_checkable
+class Connectable(Protocol, metaclass=abc.ABCMeta):
     async def connect(self, *, timeout: float = ..., reconnect: bool = ..., cls: Callable[[Client, Connectable], T] = ..., self_deaf: bool = ..., self_mute: bool = ...) -> T: ...

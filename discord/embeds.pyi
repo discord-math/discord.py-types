@@ -2,7 +2,7 @@ import abc
 import datetime
 from .colour import Colour
 from .types.embed import Embed as EmbedData, EmbedType
-from typing import Any, Dict, List, Mapping, Optional, Type, TypeVar, Union
+from typing import Any, Dict, List, Mapping, Optional, Protocol, Type, TypeVar, Union, runtime_checkable
 
 class EmbedProxy:
     def __init__(self, layer: Dict[str, Any]) -> None: ...
@@ -10,31 +10,37 @@ class EmbedProxy:
     def __getattr__(self, attr: str) -> None: ...
 T = TypeVar('T')
 
-class _EmbedFooterProxy(metaclass=abc.ABCMeta):
+@runtime_checkable
+class _EmbedFooterProxy(Protocol, metaclass=abc.ABCMeta):
     text: Optional[str]
     icon_url: Optional[str]
 
-class _EmbedFieldProxy(metaclass=abc.ABCMeta):
+@runtime_checkable
+class _EmbedFieldProxy(Protocol, metaclass=abc.ABCMeta):
     name: Optional[str]
     value: Optional[str]
     inline: bool
 
-class _EmbedMediaProxy(metaclass=abc.ABCMeta):
+@runtime_checkable
+class _EmbedMediaProxy(Protocol, metaclass=abc.ABCMeta):
     url: Optional[str]
     proxy_url: Optional[str]
     height: Optional[int]
     width: Optional[int]
 
-class _EmbedVideoProxy(metaclass=abc.ABCMeta):
+@runtime_checkable
+class _EmbedVideoProxy(Protocol, metaclass=abc.ABCMeta):
     url: Optional[str]
     height: Optional[int]
     width: Optional[int]
 
-class _EmbedProviderProxy(metaclass=abc.ABCMeta):
+@runtime_checkable
+class _EmbedProviderProxy(Protocol, metaclass=abc.ABCMeta):
     name: Optional[str]
     url: Optional[str]
 
-class _EmbedAuthorProxy(metaclass=abc.ABCMeta):
+@runtime_checkable
+class _EmbedAuthorProxy(Protocol, metaclass=abc.ABCMeta):
     name: Optional[str]
     url: Optional[str]
     icon_url: Optional[str]
